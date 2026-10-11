@@ -11,16 +11,18 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install requests beautifulsoup4
+      - run: pip install "requests[socks]" beautifulsoup4
       - run: python bch_ticket_bot.py
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
+          PROXY_URL: ${{ secrets.PROXY_URL }}
       - name: save state
         run: |
           git config user.name "bot"
